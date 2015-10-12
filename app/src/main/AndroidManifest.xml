@@ -42,7 +42,6 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER"></category>
             </intent-filter>
         </activity>
         <!--监听开机、关机-->
@@ -66,6 +65,8 @@
         <service android:name=".com.ylf.receiver.com.ylf.service.LocationService"></service>
         <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote">
         </service>
+        <activity android:name=".com.ylf.HistogramView"></activity>
+        <activity android:name=".com.ylf.CharView"></activity>
     </application>
 
 </manifest>
