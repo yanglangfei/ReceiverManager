@@ -65,7 +65,9 @@
         <service android:name=".com.ylf.receiver.com.ylf.service.LocationService"></service>
         <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote">
         </service>
+        <!--柱状图-->
         <activity android:name=".com.ylf.HistogramView"></activity>
+        <!--折线图-->
         <activity android:name=".com.ylf.CharView"></activity>
     </application>
 
