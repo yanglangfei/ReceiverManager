@@ -1,61 +1,58 @@
 package receiver.ylf.com.receivermanager;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.IntentFilter;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
-
-import receiver.ylf.com.receivermanager.com.ylf.receiver.BoothReceiver;
-import receiver.ylf.com.receivermanager.com.ylf.receiver.ReceiverMessage;
+import android.widget.ViewFlipper;
 
 public class MainActivity extends Activity {
+    private ViewFlipper viewFlipper;
+    private float start;
+    private float end;
+    private LayoutInflater inflater;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MyView myView=new MyView(this);
-        setContentView(myView);
-       /* findViewById(R.id.btn_start).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-              *//*  IntentFilter filter=new IntentFilter();
-                filter.addAction("android.intent.action.BOOT_COMPLETED");
-                filter.addAction("android.intent.action.ACTION_SHUTDOWN");
-                BoothReceiver receiver=new BoothReceiver();
-                registerReceiver(receiver, filter);
-                IntentFilter msgFilter=new IntentFilter();
-                msgFilter.addAction("android.provider.Telephony.SMS_RECEIVED");
-                ReceiverMessage receiverMessage=new ReceiverMessage();
-                registerReceiver(receiverMessage,msgFilter);
-                Log.i("111","注册...");*//*
-            }
-        });*/
-    }
-    class   MyView extends  View{
+        setContentView(R.layout.activity_main);
+        initWidget();
 
-        public MyView(Context context) {
-            super(context);
-            initView();
-        }
-
-        private void initView() {
-            Paint paint=new Paint();
-            paint.setColor(Color.parseColor("#ff00ff"));
-            paint.setStyle(Paint.Style.FILL);
-            Canvas canvas=new Canvas();
-            canvas.drawCircle(0,0,20,paint);
-        }
     }
 
+    private void initWidget() {
+        inflater=LayoutInflater.from(this);
+        viewFlipper= (ViewFlipper) findViewById(R.id.viewFilpper);
+        View view1=inflater.inflate(R.layout.pager1,null);
+        View view2=inflater.inflate(R.layout.pager2,null);
+        View view3=inflater.inflate(R.layout.pager3,null);
+        viewFlipper.addView(view1);
+        viewFlipper.addView(view2);
+        viewFlipper.addView(view3);
+    }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()){
+            case  MotionEvent.ACTION_DOWN:
+                start=event.getX();
+                break;
+            case  MotionEvent.ACTION_UP:
+                end=event.getX();
+                if(end>start){
+                    viewFlipper.setInAnimation(this,R.anim.in_leftright);
+                    viewFlipper.setOutAnimation(this,R.anim.out_rightleft);
+                    viewFlipper.showNext();
+                }else if(end<start){
+                    viewFlipper.setInAnimation(this,R.anim.in_rightleft);
+                    viewFlipper.setOutAnimation(this,R.anim.out_leftright);
+                   viewFlipper.showPrevious();
+                }
+                break;
+            default:
+                break;
+        }
+        return super.onTouchEvent(event);
+    }
 }
